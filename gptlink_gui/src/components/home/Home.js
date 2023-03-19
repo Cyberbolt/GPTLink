@@ -1,5 +1,5 @@
 import { Layout, Row, Menu, Input } from 'antd'
-import { MailOutlined, SettingOutlined, AppstoreOutlined } from '@ant-design/icons'
+import { MailOutlined, SettingOutlined, AppstoreOutlined, SendOutlined } from '@ant-design/icons'
 
 // import menuWidthAdaption from '../tools/Adaption'
 
@@ -56,7 +56,9 @@ const Home =
                 ss
             </Content>
             <Footer style={{ margin: '0 16px', textAlign: 'center' }}>
-                <TextArea rows={4} style={{ width: '750px' }} />
+                <TextArea autoSize={{ minRows: 1, maxRows: 8 }} size="large" style={{ width: '750px' }} />
+                &nbsp;
+                <SendOutlined style={{ fontSize: '20px', marginBottom: '11px' }} />
             </Footer>
         </Layout>
       </Layout>
