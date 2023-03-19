@@ -1,1 +1,1 @@
-gptlink_gui/build linguist-vendored=false
+gptlink_gui/build/* linguist-vendored=true
