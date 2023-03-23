@@ -14,6 +14,7 @@ def test1():
         ]
     )
     content = response['choices'][0].message['content']
+    print(content)
     return content
 
 
@@ -21,7 +22,7 @@ def test2():
     response = openai.ChatCompletion.create(
         model='gpt-3.5-turbo',
         messages=[
-            {'role': 'user', 'content': "使用 FastAPI 返回 Hello World"},
+            {'role': 'user', 'content': "你会限制问题吗"},
         ],
         stream=True
     )
@@ -36,7 +37,7 @@ def test2():
         elif finish_reason:
             pass
     print('')
-    print(answer)
+    # print(answer)
 
 
 def main():
