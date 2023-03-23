@@ -32,9 +32,9 @@ async def chat(item: Question):
 
 
 @front.patch('/api/conversation/chat_stream', tags=['front'])
-def chat_stream(item: Question):
-    # reply = gpt.chat_stream(username='user', version='gpt-3.5-turbo', text=item.content)
-    return StreamingResponse(gpt.chat_stream(username='user', version='gpt-3.5-turbo', text=item.content))
+async def chat_stream(item: Question):
+    reply = await gpt.chat_stream(username='user', version='gpt-3.5-turbo', text=item.content)
+    return StreamingResponse(reply)
 
 
 @front.delete('/api/conversation/chat', tags=['front'])

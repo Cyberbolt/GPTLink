@@ -21,7 +21,7 @@ async def chat(username: str, version: str = 'gpt-3.5-turbo', text: str = '') ->
     return await CONVERSAIION[username].reply(text)
 
 
-def chat_stream(username: str, version: str = 'gpt-3.5-turbo', text: str = ''):
+async def chat_stream(username: str, version: str = 'gpt-3.5-turbo', text: str = ''):
     if not CONVERSAIION.get(username):
         CONVERSAIION[username] = GPT(version=version)
     return CONVERSAIION[username].reply_stream(text)
@@ -48,9 +48,10 @@ class GPT:
         self.messages.append({'role': 'assistant', 'content': result})
         return result
 
-    def reply_stream(self, text: str):
+    async def reply_stream(self, text: str):
         self.messages.append({'role': 'user', 'content': text})
-        response = openai.ChatCompletion.create(
+        response = await asyncio.to_thread(
+            openai.ChatCompletion.create,
             model=self.version,
             messages=self.messages,
             stream=True
@@ -65,4 +66,5 @@ class GPT:
                 result += content
             elif finish_reason:
                 pass
+        print('1' + result)
         self.messages.append({'role': 'assistant', 'content': result})
