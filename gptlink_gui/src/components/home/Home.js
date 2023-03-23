@@ -1,7 +1,7 @@
-import { Layout, Row, Menu, Input } from 'antd'
-import { MailOutlined, SettingOutlined, AppstoreOutlined, SendOutlined } from '@ant-design/icons'
+import { Layout, Menu, Input } from 'antd'
+import { MailOutlined, SettingOutlined, AppstoreOutlined, SendOutlined} from '@ant-design/icons'
 
-// import menuWidthAdaption from '../tools/Adaption'
+import ChatBox from '../tools/Chat'
 
 
 function getItem(label, key, icon, children, type) {
@@ -43,6 +43,7 @@ const { Header, Content, Footer, Sider } = Layout
 const Home =
     <>
       <Layout style={{ height: '100vh'}}>
+
         <Sider style={{ width: '250px' }}>
             <Menu
                 mode="inline"
@@ -51,16 +52,29 @@ const Home =
                 style={{ height: '100vh'}}
             />
         </Sider>
+
         <Layout className="site-layout">
+
             <Content style={{ margin: '0 16px' }}>
-                ss
+              <div style={{ width: '750px', margin: '0 auto'}}>
+                <ChatBox role="user" content="sdasd" />
+                <ChatBox role="assistant" content="sdasd" />
+              </div>
             </Content>
+            
             <Footer style={{ margin: '0 16px', textAlign: 'center' }}>
-                <TextArea autoSize={{ minRows: 1, maxRows: 8 }} size="large" style={{ width: '750px' }} />
-                &nbsp;
-                <SendOutlined style={{ fontSize: '20px', marginBottom: '11px' }} />
+              <div style={{ width: '750px', margin: '0 auto'}}>
+                  <TextArea 
+                    autoSize={{ minRows: 1, maxRows: 8 }} 
+                    size="large" 
+                    style={{ width: '700px', marginLeft: 0}} 
+                  />
+                  &nbsp;
+                  <SendOutlined style={{ fontSize: '20px', marginBottom: '11px' }} />
+              </div>
             </Footer>
         </Layout>
+
       </Layout>
     </>
   
