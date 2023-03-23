@@ -21,10 +21,10 @@ async def chat(username: str, version: str = 'gpt-3.5-turbo', text: str = '') ->
     return await CONVERSAIION[username].reply(text)
 
 
-async def chat_stream(username: str, version: str = 'gpt-3.5-turbo', text: str = ''):
+def chat_stream(username: str, version: str = 'gpt-3.5-turbo', text: str = ''):
     if not CONVERSAIION.get(username):
         CONVERSAIION[username] = GPT(version=version)
-    yield CONVERSAIION[username].reply_stream(text)
+    return CONVERSAIION[username].reply_stream(text)
 
 
 def delete_history(username: str):
@@ -48,17 +48,12 @@ class GPT:
         self.messages.append({'role': 'assistant', 'content': result})
         return result
 
-    async def reply_stream(self, text: str):
+    def reply_stream(self, text: str):
         self.messages.append({'role': 'user', 'content': text})
-        # response = openai.ChatCompletion.create(
-        #     model=self.version,
-        #     messages=self.messages,
-        #     stream=True
-        # )
-        response = await asyncio.to_thread(
-            openai.ChatCompletion.create,
+        response = openai.ChatCompletion.create(
             model=self.version,
-            messages=self.messages
+            messages=self.messages,
+            stream=True
         )
         result = ''
         for part in response:
@@ -66,9 +61,8 @@ class GPT:
             finish_reason = part['choices'][0]['finish_reason']
             if 'content' in part['choices'][0]['delta']:
                 content = part['choices'][0]['delta']['content']
-                # yield content.encode()
+                yield content
                 result += content
             elif finish_reason:
                 pass
         self.messages.append({'role': 'assistant', 'content': result})
-        yield 'done'.encode()
