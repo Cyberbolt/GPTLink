@@ -1,10 +1,10 @@
 import { Card } from 'antd'
-import { UserOutlined, DesktopOutlined } from '@ant-design/icons'
+import { UserOutlined, GlobalOutlined } from '@ant-design/icons'
 
 
 let choice = {
     'user': <UserOutlined style={{ marginRight: '6px' }} />,
-    'assistant': <DesktopOutlined style={{ marginRight: '6px' }} />
+    'assistant': <GlobalOutlined style={{ marginRight: '6px' }} />
 }
 
 function ChatBox({ role, content }) {
