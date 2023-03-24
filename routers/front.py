@@ -6,7 +6,7 @@ from extensions import gpt
 
 
 class Question(BaseModel):
-    content: str
+    question: str
 
 
 front = APIRouter()
@@ -17,24 +17,24 @@ async def get_history():
     history = gpt.get_history(username='user')
     if not history:
         return {
-            'content': []
+            'answer': []
         }
     else:
         return {
-            'content': history
+            'answer': history
         }
 
 
 @front.patch('/api/conversation/chat', tags=['front'])
 async def chat(item: Question):
-    reply = await gpt.chat(username='user', version='gpt-3.5-turbo', text=item.content)
-    return {'content': reply}
+    answer = await gpt.chat(username='user', version='gpt-3.5-turbo', text=item.question)
+    return {'answer': answer}
 
 
 @front.patch('/api/conversation/chat_stream', tags=['front'])
 async def chat_stream(item: Question):
-    reply = await gpt.chat_stream(username='user', version='gpt-3.5-turbo', text=item.content)
-    return StreamingResponse(reply)
+    answer = await gpt.chat_stream(username='user', version='gpt-3.5-turbo', text=item.question)
+    return StreamingResponse(answer)
 
 
 @front.delete('/api/conversation/chat', tags=['front'])

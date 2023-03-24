@@ -7,7 +7,8 @@ let choice = {
     'assistant': <GlobalOutlined style={{ marginRight: '6px' }} />
 }
 
-function ChatBox({ role, content }) {
+export function ChatBox({ role, content }) {
+    // Generate dialog
     return (
         <Card size="small" style={{ marginBottom: '15px' }}>
             {choice[role]}
@@ -16,5 +17,3 @@ function ChatBox({ role, content }) {
     );
   }
 
-
-export default ChatBox
