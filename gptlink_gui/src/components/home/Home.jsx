@@ -1,10 +1,8 @@
-import { useState } from 'react'
-import { Layout, Menu, Input } from 'antd'
-import { MailOutlined, SettingOutlined, AppstoreOutlined, SendOutlined} from '@ant-design/icons'
-import axios from 'axios'
+import { useState, useRef, useEffect } from 'react'
+import { Layout, Menu, Input, Card } from 'antd'
+import { MailOutlined, SettingOutlined, AppstoreOutlined, SendOutlined, UserOutlined, GlobalOutlined} from '@ant-design/icons'
 
 import { ChatBox} from '../tools/Chat'
-import { URL } from '../config/config'
 
 
 function getItem(label, key, icon, children, type) {
@@ -46,52 +44,17 @@ const { Header, Content, Footer, Sider } = Layout
 
 function Home() {
   // Questions for storing input.
-  const [question, setQuestion] = useState('')
+  const questionRef = useRef(null)
 
   // Used to render the dialog list.
-  let dialogues = []
-  const [listItems, setListItems] = useState(
-    dialogues.map(dialogue =>
-      <ChatBox role={dialogue.role} content={dialogue.content} />
-    )
-  )
+  const [nums, setNums] = useState([])
 
   const getChat = () => {
-    
-    // rendering problem
-    dialogues.push({'role': 'user', 'content': question})
-    setListItems(
-      dialogues.map(dialogue =>
-        <ChatBox role={dialogue.role} content={dialogue.content} />
-      )
-    )
-
-    axios({
-        method: 'patch',
-        url: URL + '/api/conversation/chat_stream',
-        data: JSON.stringify({
-          'question': question
-        }),
-        headers:{
-          'Content-Type': 'application/json'
-        },
-        responseType: 'stream',
-    })
-    .then((response) => {
-      dialogues.push({'role': 'assistant', 'content': response.data})
-      // render answer
-      setListItems(
-        dialogues.map(dialogue =>
-          <ChatBox role={dialogue.role} content={dialogue.content} />
-        )
-      )
-    
-    })
-
-  }
-
-  const handleQuestionChange = (event) => {
-    setQuestion(event.target.value)
+    const newNums = nums.concat([{
+      'question': questionRef.current.resizableTextArea.textArea.value,
+      'answer': null
+    }])
+    setNums(newNums)
   }
 
   return (
@@ -111,17 +74,22 @@ function Home() {
 
             <Content style={{ margin: '0 16px' }}>
               <div style={{ width: '750px', margin: '0 auto'}}>
-                {listItems}
-                {/* <ChatBox role="user" content="sdasd" />
-                <ChatBox role="assistant" content="sdasd" /> */}
+
+                {nums.map((message, index) => (
+                  <ChatBox 
+                    key={index}
+                    question={message['question']} 
+                    oldAnswer={message['answer']}
+                  />
+                ))}
+
               </div>
             </Content>
             
             <Footer style={{ margin: '0 16px', textAlign: 'center' }}>
               <div style={{ width: '750px', margin: '0 auto'}}>
-                  <TextArea 
-                    value={question}
-                    onChange={handleQuestionChange}
+                  <TextArea
+                    ref={questionRef}
                     autoSize={{ minRows: 1, maxRows: 8 }} 
                     size="large"
                     style={{ width: '700px', marginLeft: 0}} 

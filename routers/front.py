@@ -1,4 +1,4 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, WebSocket
 from fastapi.responses import StreamingResponse
 from pydantic import BaseModel
 
@@ -25,16 +25,28 @@ async def get_history():
         }
 
 
-@front.patch('/api/conversation/chat', tags=['front'])
+@front.post('/api/conversation/chat', tags=['front'])
 async def chat(item: Question):
     answer = await gpt.chat(username='user', version='gpt-3.5-turbo', text=item.question)
     return {'answer': answer}
 
 
-@front.patch('/api/conversation/chat_stream', tags=['front'])
+@front.post('/api/conversation/chat_stream', tags=['front'])
 async def chat_stream(item: Question):
     answer = await gpt.chat_stream(username='user', version='gpt-3.5-turbo', text=item.question)
     return StreamingResponse(answer)
+
+
+@front.websocket('/ws/conversation/chat_stream')
+async def chat_stream_ws(websocket: WebSocket):
+    await websocket.accept()
+    question = await websocket.receive_text()
+    answer = await gpt.chat_stream(username='user', version='gpt-3.5-turbo', text=question)
+    # await websocket.send_text(answer)
+    print(answer)
+    async for part in answer:
+        await websocket.send_text(part)
+    # await websocket.close()
 
 
 @front.delete('/api/conversation/chat', tags=['front'])
