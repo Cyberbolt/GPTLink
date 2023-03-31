@@ -46,8 +46,24 @@ function Home() {
   // Questions for storing input.
   const questionRef = useRef(null)
 
+  const [question, setQuestion] = useState('')
+
   // Used to render the dialog list.
   const [nums, setNums] = useState([])
+
+  const handleKeyPress = (event) => {
+    if (event.key === 'Enter' && event.shiftKey) {
+      return
+    }
+    else if (event.key === 'Enter') {
+      event.preventDefault()
+      getChat()
+    }
+  }
+
+  const handleInputChange = (event) => {
+    setQuestion(event.target.value)
+  }
 
   const getChat = () => {
     const newNums = nums.concat([{
@@ -55,6 +71,7 @@ function Home() {
       'answer': null
     }])
     setNums(newNums)
+    setQuestion('')
   }
 
   return (
@@ -90,12 +107,17 @@ function Home() {
               <div style={{ width: '750px', margin: '0 auto'}}>
                   <TextArea
                     ref={questionRef}
+                    value={question}
+                    onKeyDown={handleKeyPress}
+                    onChange={handleInputChange}
                     autoSize={{ minRows: 1, maxRows: 8 }} 
                     size="large"
                     style={{ width: '700px', marginLeft: 0}} 
                   />
                   &nbsp;
-                  <span onClick={getChat} >
+                  <span 
+                    onClick={getChat}  
+                  >
                     <SendOutlined style={{ fontSize: '20px', marginBottom: '11px' }} />
                   </span>
               </div>
