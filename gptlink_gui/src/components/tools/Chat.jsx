@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { Card } from 'antd'
 import { UserOutlined, GlobalOutlined } from '@ant-design/icons'
+import ReactMarkdown from 'react-markdown'
 
 import { URL_WS } from '../config/config'
 
@@ -34,8 +35,8 @@ export function ChatBox({ key, question, oldAnswer }) {
                 {question}
             </Card>
             <Card size="small" style={{ marginBottom: '15px' }}>
-                <GlobalOutlined style={{ marginRight: '6px' }} />
-                {answer}
+                <GlobalOutlined style={{ marginRight: '6px', display:'inline-block' }} />
+                <ReactMarkdown style={{ display:'inline-block' }}>{answer}</ReactMarkdown>
             </Card>
         </>
     )

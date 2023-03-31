@@ -76,7 +76,7 @@ function Home() {
 
   return (
     <>
-      <Layout style={{ height: '100vh'}}>
+      <Layout style={{ height: '100%'}}>
 
         <Sider width={ '250px' }>
             <Menu
