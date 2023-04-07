@@ -42,11 +42,9 @@ async def chat_stream_ws(websocket: WebSocket):
     await websocket.accept()
     question = await websocket.receive_text()
     answer = await gpt.chat_stream(username='user', version='gpt-3.5-turbo', text=question)
-    # await websocket.send_text(answer)
-    print(answer)
     async for part in answer:
         await websocket.send_text(part)
-    # await websocket.close()
+    await websocket.close()
 
 
 @front.delete('/api/conversation/chat', tags=['front'])
