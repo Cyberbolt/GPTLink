@@ -41,7 +41,7 @@ def test2():
 
 
 def main():
-    test2()
+    test1()
     
 
 if __name__ == '__main__':
