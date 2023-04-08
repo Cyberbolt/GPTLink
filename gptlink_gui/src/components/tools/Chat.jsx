@@ -1,12 +1,11 @@
 import { useState, useEffect } from 'react'
-import { Col, Row, Card, Tooltip, Button } from 'antd'
+import { Card, Tooltip, Button } from 'antd'
 import { UserOutlined, GlobalOutlined, CopyOutlined } from '@ant-design/icons'
 import ReactMarkdown from 'react-markdown'
 import remarkHighlight from 'remark-highlight.js'
 import 'highlight.js/styles/vs2015.css'
 import SyntaxHighlighter from 'react-syntax-highlighter'
-import { github } from 'react-syntax-highlighter/dist/esm/styles/hljs'
-import copy from 'copy-to-clipboard'
+import { dracula } from 'react-syntax-highlighter/dist/esm/styles/hljs'
 import { URL_WS } from '../config/config'
 import { CopyToClipboard } from 'react-copy-to-clipboard'
 
@@ -49,16 +48,17 @@ export function ChatBox({ key, question, oldAnswer }) {
               <GlobalOutlined style={{ marginRight: '6px' }} />
               <ReactMarkdown 
                   plugins={[remarkHighlight]} 
-                  unwrapDisallowed={true} // 将 p 标签替换为其子元素
+                  unwrapDisallowed={true} // Replace the p tag with its child element
                   children={answer} 
                   components={{
                     code({ node, inline, className, children, ...props }) {
-                      const match = /language-(\w+)/.exec(className || '');
-                      return !inline && match ? (
+                      const match = /language-(\w+)/.exec(className || '')
+                      const lang = match ? match[1] : null;
+                      return !inline && lang ? (
                         <div style={{ position: 'relative' }}>
                           <SyntaxHighlighter
-                            style={github}
-                            language={match[1]}
+                            style={dracula}
+                            language={lang}
                             PreTag="div"
                             children={String(children).replace(/\n$/, '')}
                             {...props}
