@@ -1,9 +1,18 @@
 import { Row, Card, Input, Button } from 'antd'
 import { UserOutlined, LockOutlined } from '@ant-design/icons'
 
+import bg from '../login/bg.jpg'
+
 
 const Login = () => (
-    <div>
+    <div 
+        style={{ 
+            backgroundImage: `url(${bg})`, 
+            backgroundRepeat: "no-repeat",
+            backgroundAttachment: "fixed",
+            backgroundSize: "cover"
+        }}
+    >
         <Row type="flex" justify="center" align="middle" style={{minHeight:'100vh'}}>
             <Card
                 title="GPTLink"
