@@ -66,3 +66,4 @@ class GPT:
             elif finish_reason:
                 pass
         self.messages.append({'role': 'assistant', 'content': result})
+        print(self.messages)
